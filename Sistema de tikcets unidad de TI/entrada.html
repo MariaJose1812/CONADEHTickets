@@ -6,10 +6,11 @@
     <link rel="stylesheet" href="styles.css" />
     <title>CONADEH - Sistema de Tickets</title>
   </head>
+  
   <body>
     <h1>Comisionado Nacional de los Derechos Humanos</h1>
 
-    <div class="card">
+    <form class="card" id="formTicket">
       <h2 class="st">Sistema de tickets</h2>
       <p>
         Le enviaremos una confirmación vía correo electrónico con su número de
@@ -65,15 +66,37 @@
       </select>
 
 
-      <input type="text" placeholder="Nombre y Apellido" />
+      <input type="text" id="nombre" placeholder="Nombre y Apellido" />
 
 
       <textarea
-        name="PromDescription"
-        placeholder="Añade una descripción del problema"
+        id="descripcion"
+        placeholder="Describa aquí su problema o queja"
       ></textarea>
 
       <button type="submit">Generar ticket</button>
+    </form>
+
+    <div class="CardConfirmation oculto" id="confirmation">
+      <h2>Ticket generado con éxito</h2>
+
+      <div class="Ticket">
+        <p><strong>N° Ticket:</strong> <span id="ticketNumber"></span></p>
+        <p><strong>Departamento:</strong> <span id="ticketDepartamento"></span></p>
+        <p><strong>Nombre:</strong> <span id="ticketNombre"></span></p>
+        <p><strong>Descripción:</strong> <span id="ticketDescripcion"></span></p>
+      </div>
+
+      <script src ="GeneracionTicket.js"></script>
     </div>
+    
   </body>
+  <footer>
+    <p>© 2026 | Comisionado Nacional de los Derechos Humanos - CONADEH</p>
+  </footer>
+
+  
+      
+   
+
 </html>
