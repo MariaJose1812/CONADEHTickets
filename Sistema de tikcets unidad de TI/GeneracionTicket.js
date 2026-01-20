@@ -1,30 +1,33 @@
 
 
-
-document.querySelector("button[type='submit']").addEventListener("click", function (e) {
-    e.preventDefault(); 
-
-    document.getElementById("formTicket").classList.add("oculto");
-    document.getElementById("CardConfirmation").classList.remove("oculto");
-});
-
 document.addEventListener("DOMContentLoaded", function() {
-document.getElementById("formTicket").addEventListener("submit", function(e) {
+    const formulario = document.getElementById("formTicket");
+    const confirmacion = document.getElementById("confirmation");
+
+    formulario.addEventListener("submit", function(e) {
     e.preventDefault();
-    const Ticket = {
+    const ticketData = {
         numero: Math.floor(Math.random() * 1000000),
         departamento: document.getElementById("departamento").value,
         nombre: document.getElementById("nombre").value,
         descripcion: document.getElementById("descripcion").value,
-         fecha: new Date().toLocaleString()
+    };
+
+    if (!ticketData.departamento || !ticketData.nombre || !ticketData.descripcion) {
+        alert("Por favor, complete todos los campos del formulario.");
+        return;
     }
+
+    document.getElementById("ticketNumber").textContent = ticketData.numero;
+    document.getElementById("ticketDepartamento").textContent = ticketData.departamento;
+    document.getElementById("ticketNombre").textContent = ticketData.nombre;
+    document.getElementById("ticketDescripcion").textContent = ticketData.descripcion;
+
+    formulario.classList.add("oculto");
+    confirmacion.classList.remove("oculto");
+
+    console.log("Ticket generado:", ticketData);
 });
 
-document.getElementById("ticketNumber").textContent = Ticket.numero;
-document.getElementById("ticketDepartamento").textContent = Ticket.departamento;
-document.getElementById("ticketNombre").textContent = Ticket.nombre;
-document.getElementById("ticketDescripcion").textContent = Ticket.descripcion;
 
-document.getElementById("formTicket").classList.add("oculto");
-document.getElementById("CardConfirmation").classList.remove("oculto");
 });

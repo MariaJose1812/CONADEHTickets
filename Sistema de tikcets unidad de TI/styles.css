@@ -107,13 +107,13 @@ footer{
 }
 
 .oculto {
-  display: none;
+  display: none !important;
 }
 
 .Ticket{
   font-size: 18px;
   font-weight: bold;
-  color: #66c0c0;
+  color: #010101;
   margin-top: 20px;
 }
 
