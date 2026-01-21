@@ -1,19 +1,27 @@
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 50px;
   color: #333;
+  min-height: 100vh;
+  background-image:url("Background_Images/logo.jpg") ;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-image: url("Background_Images/logo.jpg");
-  background-size: cover;
+  align-items: center;
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
   position: relative;
   flex-direction: column;
+
+}
+
+.titulo {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #134e4a;
 }
 
 body::before {
@@ -24,40 +32,27 @@ body::before {
   z-index: -1;
 }
 
-h1 {
-  color: #003366;
-  text-align: center;
-  margin-bottom: 20px;
-  align-items: center;
-}
 
 .card {
-  background-color: #66c0c0;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   max-width: 500px;
   width: 100%;
-
   display: flex;
   flex-direction: column;
   gap: 15px;
   align-items: center;
   text-align: center;
-
   position: relative;
+
 }
 
 .st {
   margin: 0;
   font-size: 24px;
   color: #222;
-}
-
-p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
 }
 
 input[type="text"],
@@ -67,43 +62,77 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  font-family: inherit;
+  font-family: Arial;
 }
 
-textarea {
-  height: 100px;
-  resize: vertical;
+.card h2 {
+  text-align: center;
+  color: #0f766e;
 }
 
-.departamento {
+.subtitulo {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+ 
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-group i {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #0f766e;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #605e5e;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-family: inherit;
+  padding: 10px 10px 10px 38px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
 
-  }
+.input-group textarea {
+  min-height: 90px;
+  resize: none;
+}
 
 button {
-  background-color: #0056b3;
+  width: 100%;
+  background: #0f766e;
   color: white;
-  padding: 12px 20px;
   border: none;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
 
 button:hover {
-  background-color: #003d7a;
+  background: #115e59;
 }
 
-footer{
-  margin-top: 50px;
-  font-size: 12px;
-  color: #080808;
+
+.container {
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #555;
 }
 
 .oculto {
