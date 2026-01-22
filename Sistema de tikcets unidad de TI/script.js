@@ -16,11 +16,12 @@ document.addEventListener("DOMContentLoaded", async function() {
       numeroTicket: numeroTicket,
       idDep: parseInt(document.getElementById("departamento").value),
       nombreContacto: document.getElementById("nombre").value,
+      correoContacto: document.getElementById("correo").value,
       descripcionProblema: document.getElementById("descripcion").value,
     };
 
     // Validar campos
-    if (!ticketData.idDep || !ticketData.nombreContacto || !ticketData.descripcionProblema) {
+    if (!ticketData.idDep || !ticketData.nombreContacto || !ticketData.correoContacto || !ticketData.descripcionProblema) {
       alert("Por favor, complete todos los campos del formulario.");
       return;
     }
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       document.getElementById("ticketDepartamento").textContent = 
         deptSelect.options[deptSelect.selectedIndex].text;
       document.getElementById("ticketNombre").textContent = ticketData.nombreContacto;
+        document.getElementById("ticketCorreo").textContent = ticketData.correoContacto;
       document.getElementById("ticketDescripcion").textContent = ticketData.descripcionProblema;
 
       // Ocultar formulario y mostrar confirmación

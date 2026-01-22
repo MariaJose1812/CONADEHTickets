@@ -9,10 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
       numero: Math.floor(Math.random() * 1000000),
       departamento: document.getElementById("departamento").value,
       nombre: document.getElementById("nombre").value,
+      correo: document.getElementById("correo").value,
       descripcion: document.getElementById("descripcion").value,
     };
 
-    if (!ticketData.departamento || !ticketData.nombre || !ticketData.descripcion) {
+    if (!ticketData.departamento || !ticketData.nombre || !ticketData.correo || !ticketData.descripcion) {
       alert("Por favor, complete todos los campos del formulario.");
       return;
     }
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("ticketNumber").textContent = ticketData.numero;
     document.getElementById("ticketDepartamento").textContent = ticketData.departamento;
     document.getElementById("ticketNombre").textContent = ticketData.nombre;
+    document.getElementById("ticketCorreo").textContent = ticketData.correo;
     document.getElementById("ticketDescripcion").textContent = ticketData.descripcion;
 
     // Ocultar formulario y mostrar confirmación
