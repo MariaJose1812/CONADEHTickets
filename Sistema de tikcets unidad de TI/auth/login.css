@@ -1,0 +1,85 @@
+body { 
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 50px;
+  color: #333;
+  min-height: 100vh;
+  background-image:url("../Background_Images/logo.jpg") ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+
+}
+
+.auth-card {
+    background: white; 
+    padding: 2rem; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    width: 100%; 
+    max-width: 400px; 
+    text-align: center; 
+}
+
+.logo-img { 
+    max-width: 150px; 
+    margin-bottom: 1rem; 
+}
+
+.link-text { 
+    margin-top: 1rem; 
+    font-size: 0.9rem; 
+}
+
+.link-text a { 
+    color: #0056b3; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"]
+ {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: Arial;
+  padding-left: 40px;
+  
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+  width: 100%;
+  
+}
+
+.input-group i {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #0f766e;
+  
+}
+
+button[type="submit"] {
+  width: 100%;
+  background: #0f766e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
