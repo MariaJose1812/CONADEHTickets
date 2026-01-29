@@ -18,7 +18,7 @@
     <div class="card" id="formTicket">
       <h2><i class="fa-solid fa-ticket"></i> Sistema de Tickets</h2>
       <p class="subtitulo">
-        Recibirá un correo con el numero de ticket para su seguimiento
+        Recibirá un correo con el número de ticket para su seguimiento.
       </p>
 
         <form id="formularioTicket">
@@ -37,7 +37,7 @@
 
       <div class="input-group">
         <i class="fa-solid fa-user"></i>
-      <input type="text" id="correo" placeholder="Correo electrónico" />
+      <input type="email" id="correo" placeholder="Correo electrónico" />
       </div>
 
       <div class="input-group textarea">
@@ -47,24 +47,37 @@
 
       <button type="submit">
         <i class="fa-solid fa-paper-plane"></i>
-        Generar ticket
+        <span class="btn-text">Generar ticket</span>
       </button>
+
     </form>
+
     </div>
 
     <div class="card oculto" id="confirmation">
-      <h2 class="st">Ticket generado con éxito</h2>
+      <div class="check">
+        ✔
+          </div>
+       
+      <h2 class="st">¡Ticket generado con éxito!</h2>
+      <div class="ticket-number">
+       <p><strong>Su número de ticket es:</strong> <span id="ticketNumber"></span></p>
+      </div>
 
       <div class="Ticket">
-        <p><strong>N° Ticket:</strong> <span id="ticketNumber"></span></p>
+        
         <p><strong>Departamento:</strong> <span id="ticketDepartamento"></span></p>
         <p><strong>Nombre:</strong> <span id="ticketNombre"></span></p>
+        <p><strong>Correo:</strong> <span id="ticketCorreo"></span></p>
         <p><strong>Descripción:</strong> <span id="ticketDescripcion"></span></p>
       </div>
-    </div>
+      <div class="action">
+      <button type="button" class="btn" id="btn-nuevoticket">+ Crear nuevo ticket</button>
 
-    <script src ="GeneracionTicket.js"></script>
-    <script src="script.js"></script>
+    </div>
+    </div>
+    
+  <script type="module" src="GeneracionTicket.js"></script>
     
   </body>
   <footer>
