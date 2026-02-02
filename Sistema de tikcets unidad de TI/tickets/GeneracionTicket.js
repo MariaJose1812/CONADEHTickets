@@ -24,8 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Validar que todos los campos estén completos
     if (!idDep || !nombre || !correo || !descripcion) {
-      alert("Por favor, complete todos los campos.");
+       Swal.fire({
+    icon: 'error',
+    title: 'Campos incompletos',
+    text: 'Por favor, complete todos los campos.',
+    confirmButtonColor: '#f44336'
+  });
       valido = false;
+
     }
 
       btnSubmit.classList.add("button-loading");
@@ -83,6 +89,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
   });
 
+  // Función para cargar departamentos del backend
+  async function cargarDepartamentos() {
+    try {
+      const response = await fetch("http://localhost:3000/api/departamentos");
+      
+      if (!response.ok) {
+        throw new Error("Error al obtener departamentos");
+      }
+
+      const data = await response.json();
+      const selectDepartamento = document.getElementById("departamento");
+
+      
+      selectDepartamento.innerHTML = '<option value="" disabled selected>Seleccione el departamento</option>';
+
+      // Agregar opciones de departamentos
+      data.departamentos.forEach(dept => {
+        const option = document.createElement("option");
+        option.value = dept.IdDep;
+        option.textContent = dept.NomDep;
+        selectDepartamento.appendChild(option);
+      });
+
+      console.log("✔ Departamentos cargados:", data.departamentos.length);
+    } catch (error) {
+      console.error("X Error al cargar departamentos:", error);
+      alert("Error al cargar los departamentos. Verifica que el backend esté corriendo.");
+    }
+  }
+
   function nombreValido(nombre) {
     const regex = /^[a-zA-ZÀ-ÿ\s]{1,100}$/;
     return regex.test(nombre.trim());
@@ -114,33 +150,5 @@ document.addEventListener("DOMContentLoaded", function() {
     formTicketDiv.classList.remove("oculto");
   });
 
-  // Función para cargar departamentos del backend
-  async function cargarDepartamentos() {
-    try {
-      const response = await fetch("http://localhost:3000/api/departamentos");
-      
-      if (!response.ok) {
-        throw new Error("Error al obtener departamentos");
-      }
-
-      const data = await response.json();
-      const selectDepartamento = document.getElementById("departamento");
-
-      
-      selectDepartamento.innerHTML = '<option value="" disabled selected>Seleccione el departamento</option>';
-
-      // Agregar opciones de departamentos
-      data.departamentos.forEach(dept => {
-        const option = document.createElement("option");
-        option.value = dept.IdDep;
-        option.textContent = dept.NomDep;
-        selectDepartamento.appendChild(option);
-      });
-
-      console.log("✔ Departamentos cargados:", data.departamentos.length);
-    } catch (error) {
-      console.error("X Error al cargar departamentos:", error);
-      alert("Error al cargar los departamentos. Verifica que el backend esté corriendo.");
-    }
-  }
+  
 });
