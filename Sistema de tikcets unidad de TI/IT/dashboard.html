@@ -1,41 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-     
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
     <title>Bienvenido al Sistema de Tickets</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <nav class="navbar">
+      <div class="nav-left">
+        <i class="titulo"></i>
+        <span>Sistema de Tickets - Unidad de TI</span>
+      </div>
 
-        <div class="nav-left">
-            <i class="titulo"></i>
-            <span>Sistema de Tickets - Unidad de TI</span>
-        </div>
-
-        <div class="nav-right">
-            <a href="#"><i class="fa-solid fa-user-circle"></i> Perfil</a>
-            <a href="#"><i class="fa-solid fa-sign-out-alt"></i> Cerrar sesión</a>
-        </div>
-
+      <div class="nav-right">
+        <a href="#"><i class="fa-solid fa-user-circle"></i> Perfil</a>
+        <a href="#"><i class="fa-solid fa-sign-out-alt"></i> Cerrar sesión</a>
+      </div>
     </nav>
 
     <div class="tickets-container">
-        <h2><i class="fa-solid fa-ticket"></i> Tickets Registrados</h2>
-        <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        <input type="text" id="search-ticket" placeholder="Buscar tickets...">
-        <div id="tickets-container">
-            <!-- Los tickets se cargarán aquí dinámicamente -->
-        </div>
+      <h2><i class="fa-solid fa-ticket"></i> Tickets Registrados</h2>
+      <button><i class="fa-solid fa-magnifying-glass"></i></button>
+      <input type="text" id="search-ticket" placeholder="Buscar tickets..." />
+      <div id="tickets-container">
+        <!-- Los tickets se cargarán aquí dinámicamente -->
+      </div>
     </div>
 
     <script src="dashboard.js"></script>
-
-</body>
+  </body>
 
   <footer>
     <p>© 2026 | CONADEH</p>
