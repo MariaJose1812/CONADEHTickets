@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <title>CONADEH - Sistema de Tickets</title>
   </head>
-  
+
   <body>
+
     <h1 class="titulo">
-    <i class="fa-solid fa-hands-holding-child"></i>
+      <img src="../Background_Images/logo1.png" alt="Logo" class="logo">
       Comisionado Nacional de los Derechos Humanos
     </h1>
 
@@ -21,68 +27,73 @@
         Recibirá un correo con el número de ticket para su seguimiento.
       </p>
 
-        <form id="formularioTicket">
-
-          <div class="input-group">
-            <i class="fa-solid fa-building"></i>
-            <select class="departamento" id="departamento">
-              <option value="" disabled selected>Seleccione el departamento</option>
-            </select>
+      <form id="formularioTicket">
+        <div class="input-group">
+          <i class="fa-solid fa-building"></i>
+          <select class="departamento" id="departamento">
+            <option value="" disabled selected>
+              Seleccione el departamento
+            </option>
+          </select>
         </div>
-       
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-      <input type="text" id="nombre" placeholder="Nombre y Apellido" />
-      </div>
 
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-      <input type="email" id="correo" placeholder="Correo electrónico" />
-      </div>
+        <div class="input-group">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="nombre" placeholder="Nombre y Apellido" />
+        </div>
 
-      <div class="input-group textarea">
-        <i class="fa-solid fa-comment-dots"></i>
-        <textarea id="descripcion" name="descripcion" placeholder="Describa su problema..."></textarea>
-      </div>
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="correo" placeholder="Correo electrónico" />
+        </div>
 
-      <button type="submit">
-        <i class="fa-solid fa-paper-plane"></i>
-        <span class="btn-text">Generar ticket</span>
-      </button>
+        <div class="input-group textarea">
+          <i class="fa-solid fa-comment-dots"></i>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            placeholder="Describa su problema..."
+          ></textarea>
+        </div>
 
-    </form>
-
+        <button type="submit">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span class="btn-text">Generar ticket</span>
+        </button>
+      </form>
     </div>
 
     <div class="card oculto" id="confirmation">
-      <div class="check">
-        ✔
-          </div>
-       
+      <div class="check">✔</div>
+
       <h2 class="st">¡Ticket generado con éxito!</h2>
       <div class="ticket-number">
-       <p><strong>Su número de ticket es:</strong> <span id="ticketNumber"></span></p>
+        <p>
+          <strong>Su número de ticket es:</strong>
+          <span id="ticketNumber"></span>
+        </p>
       </div>
 
       <div class="Ticket">
-        
-        <p><strong>Departamento:</strong> <span id="ticketDepartamento"></span></p>
+        <p>
+          <strong>Departamento:</strong> <span id="ticketDepartamento"></span>
+        </p>
         <p><strong>Nombre:</strong> <span id="ticketNombre"></span></p>
         <p><strong>Correo:</strong> <span id="ticketCorreo"></span></p>
-        <p><strong>Descripción:</strong> <span id="ticketDescripcion"></span></p>
+        <p>
+          <strong>Descripción:</strong> <span id="ticketDescripcion"></span>
+        </p>
       </div>
       <div class="action">
-      <button type="button" class="btn" id="btn-nuevoticket">+ Crear nuevo ticket</button>
+        <button type="button" class="btn" id="btn-nuevoticket">
+          + Crear nuevo ticket
+        </button>
+      </div>
+    </div>
 
-    </div>
-    </div>
-    
-  <script type="module" src="GeneracionTicket.js"></script>
-    
+    <script type="module" src="GeneracionTicket.js"></script>
   </body>
   <footer>
     <p>© 2026 | CONADEH</p>
   </footer>
-
-
 </html>
