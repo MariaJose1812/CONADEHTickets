@@ -38,7 +38,7 @@ document.getElementById("registerForm")?.addEventListener("submit", async e => {
   const nombre = document.getElementById("nombre").value;
   const correo = document.getElementById("correo").value;
   const password = document.getElementById("password").value;
-  const codigoSoporte = document.getElementById("codigoSoporte")?.value || "";
+  const codigoSoporte = document.getElementById("codigoSoporte")?.value || "IT_Cndh-2026";
 
   try {
     const res = await fetch(`${API_URL}/auth/register`, {
@@ -50,8 +50,7 @@ document.getElementById("registerForm")?.addEventListener("submit", async e => {
     const data = await res.json();
     if (!res.ok) throw data;
 
-    alert("Registro exitoso. Por favor inicia sesión.");
-    window.location.href = "login.html";
+    window.location.href = "../tickets/entrada.html";
 
   } catch (err) {
     alert(err.error || "Error al registrarse");

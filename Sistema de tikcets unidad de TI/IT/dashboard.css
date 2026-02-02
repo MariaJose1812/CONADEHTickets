@@ -76,6 +76,47 @@ body{
     font-size: 14px;
 }
 
+.tickets-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+}
+
+#search-bar {
+    width: 90%;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.ticket-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.status-open { background-color: #22c55e; } 
+.status-inprogress { background-color: #f59e0b; } 
+.status-closed { background-color: #64748b; } 
+
+footer {
+  position: static;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #555;
+}
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const confirmacion = document.getElementById("confirmation");
   const formTicketDiv = document.getElementById("formTicket");
 
-  // Cargar departamentos al iniciar
+  
   cargarDepartamentos();
 
   formulario.addEventListener("submit", async function(e) {
@@ -77,11 +77,15 @@ document.addEventListener("DOMContentLoaded", function() {
       alert("X Error al conectar con el servidor. Verifica que el backend esté corriendo en http://localhost:3000");
     } finally {
       btnSubmit.classList.remove("button-loading");
-      btnSubmit.disabled = false; // Rehabilita el botón
+      btnSubmit.disabled = false;
       btnText.textContent = textoOriginal;
     }
 
+      cargarTickets();
+      ActivarBusqueda();
+
   });
+
 
   // Función para cargar departamentos del backend
   async function cargarDepartamentos() {
