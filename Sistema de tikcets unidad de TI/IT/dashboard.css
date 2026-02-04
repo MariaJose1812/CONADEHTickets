@@ -1,113 +1,119 @@
-body{
-    font-family: 'Times New Roman', Times, serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #CCFBF1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
+body {
+  font-family: "Times New Roman", Times, serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #ccfbf1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.titulo{
-    text-align: center;
+.titulo {
+  text-align: center;
   margin-bottom: 20px;
   color: #134e4a;
 }
 
 .dashboard-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
 }
 
 .navbar {
-    background-color: #0f766e;
-    position: relative;
-    display: flex;
-    padding: 10px;
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #0f766e;
+  position: relative;
+  display: flex;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.nav-right{
-    display: flex;
-    align-items: right;
-    gap: 15px;
+.nav-right {
+  display: flex;
+  align-items: right;
+  gap: 15px;
 }
 
-.nav-left a, .nav-right a {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 17px;
+.nav-left a,
+.nav-right a {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 17px;
 }
 
 .navbar-search {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border-radius: 10px;
-    border-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 10px;
+  border-color: transparent;
 }
 
 .navbar-search i {
-    color: #0f766e;
-    font-size: 18px;
+  color: #0f766e;
+  font-size: 18px;
 }
 
 .navbar-search input {
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
 .tickets-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    width: 100%;
-    max-width: 800px;
-    text-align: center;
-    position: relative;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  position: relative;
 }
 
 #search-bar {
-    width: 90%;
-    padding: 8px 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
+  width: 90%;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
 }
 
 .ticket-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    text-align: left;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: left;
 }
 
-.status-open { background-color: #22c55e; } 
-.status-inprogress { background-color: #f59e0b; } 
-.status-closed { background-color: #64748b; } 
+.status-open {
+  background-color: #22c55e;
+}
+.status-inprogress {
+  background-color: #f59e0b;
+}
+.status-closed {
+  background-color: #64748b;
+}
 
 footer {
   position: static;
@@ -118,14 +124,13 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .nav-right {
-        flex-direction: column;
-        align-items: center;
-    }
-}
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
 
+  .nav-right {
+    flex-direction: column;
+    align-items: center;
+  }
+}
