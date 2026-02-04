@@ -1,82 +1,182 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body { 
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 50px;
-  color: #333;
-  min-height: 100vh;
-  background-image:url("../Background_Images/logo.jpg") ;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-items: center;
-  background-position: center;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  position: relative;
-  flex-direction: column;
-
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden; 
+    background: #ffffff;
 }
 
-.auth-card { 
-    background: white; 
-    padding: 2rem; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    width: 100%; 
-    max-width: 400px; 
-    text-align: center; 
+/* CONTENEDOR PRINCIPAL*/
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
-        
-.link-text { 
-    margin-top: 1rem; 
-    font-size: 0.9rem; 
-}
-        
-.link-text a { 
-    color: #0056b3; 
-    text-decoration: none; 
-    font-weight: bold;
- }
 
-input[type="text"],
-input[type="email"],
-input[type="password"]
- {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-family: Arial;
-  padding-left: 40px;
-  
+/* SECCIÓN IZQUIERDA (BLANCA) */
+.left-section {
+    width: 55%; 
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1; 
+}
+
+.branding {
+    text-align: center;
+    color: #0d9488;
+}
+
+.left-section h2 {
+    font-family: Cambria, Georgia;
+    font-style: italic;
+    font-size: 2.8rem;
+    margin-bottom: 50px;
+}
+
+.logo {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.branding h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* SECCIÓN DERECHA (AZUL)*/
+.right-section {
+    width: 45%;
+    background: #154c79; /* Azul oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white; 
+    z-index: 2;
+}
+
+/* DIAGONAL (El efecto visual) */
+.right-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120px; /* Ajusta qué tan "adentro" entra el corte */
+    width: 250px;
+    height: 100%;
+    background: #154c79; 
+    transform: skewX(-12deg); /* Inclinación */
+    z-index: -1;
+}
+
+/* CAJA DEL LOGIN */
+.Login-box {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 2; /* Encima de la diagonal */
+    padding: 20px;
+}
+
+.Login-box h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.Login-box p {
+    margin-bottom: 30px;
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+/* INPUTS */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .group-input {
-  position: relative;
-  margin-bottom: 15px;
-  width: 100%;
-  
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.group-input input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; 
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #ffffff;
+    color: #333;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .group-input i {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  color: #0f766e;
-  
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+    color: #154c79; 
+    font-size: 1.1rem;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
 }
 
 button[type="submit"] {
-  width: 100%;
-  background: #0f766e;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
+    width: 100%;
+    background: #0d9488; 
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
+button[type="submit"]:hover {
+    background: #115e59;
+    transform: translateY(-2px);
+}
 
+/* LINK REGISTRO */
+.link-text {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color : #fff;
+}
+
+.link-text a {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .main-container { flex-direction: column; }
+    .left-section { display: none; } /* En móvil ocultamos el lado izquierdo */
+    .right-section { width: 100%; }
+    .right-section::before { display: none; } /* Quitamos la diagonal en móvil */
+}
