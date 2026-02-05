@@ -20,13 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const correo = document.getElementById("correo").value;
     const descripcion = document.getElementById("descripcion").value;
 
-    let valido = true;
-
-    // Validar que todos los campos estén completos
-    if (!idDep || !nombre || !correo || !descripcion) {
-      alert("Por favor, complete todos los campos.");
-      valido = false;
-    }
 
       btnSubmit.classList.add("button-loading");
       btnSubmit.disabled = true; // Deshabilita para evitar doble envío
@@ -49,7 +42,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        alert("Error al crear el ticket: " + (errorData.error || "Error desconocido"));
+        Swal.fire ({
+          icon: 'error',
+          title: 'Error al crear el ticket',
+          text: errorData.error || 'Error desconocido',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#0f766e',
+          customClass: {
+            popup: "border-radius-16"
+          }
+        });
+
         return;
       }
 
@@ -131,16 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return descripcion.length > 0 && descripcion.length <= 500;
   }
 
-  function mostrarError(idCampo, mensaje) {
-    const campo = document.getElementById(idCampo);
-    campo.classList.add("error");
-    
-    const error = document.createElement("div");
-    error.className = "error-message";
-    error.textContent = mensaje;
-    campo.parentElement.appendChild(error);
-  }
-
+  
   const btnNuevoTicket = document.getElementById("btn-nuevoticket");
 
   btnNuevoTicket.addEventListener("click", function() {

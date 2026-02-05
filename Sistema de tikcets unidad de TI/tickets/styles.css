@@ -1,30 +1,40 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 50px;
+  padding: 0;
   color: #333;
   min-height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
   align-items: center;
-  background-position: center;
-  background-repeat: no-repeat;
-  overflow: hidden;
+  background-color: #ffffff;
+  overflow-x: hidden;
   position: relative;
   flex-direction: column;
+  background: linear-gradient(
+    155deg,
+    #ffffff 50%,
+    #154c79 50%
+  );
+  background-attachment: fixed;
 }
 
+
 .titulo {
+  position: relative;
   text-align: center;
   margin: 20px 0;
+  max-width: 500px;
   color: #134e4a;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 30px;
   font-weight: bold;
+  justify-content: center;
+  z-index: 10;
 }
 
 .titulo .logo {
@@ -32,27 +42,14 @@ body {
   height: auto;
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(253, 252, 252, 0.422);
-  z-index: -1;
-}
-
 .card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   max-width: 430px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-  text-align: center;
-  position: relative;
+  z-index: 10;
 }
 
 input[type="text"],
@@ -63,6 +60,7 @@ textarea {
   border-radius: 4px;
   box-sizing: border-box;
   font-family: Arial;
+  
 }
 
 .card h2 {
@@ -164,11 +162,13 @@ button:hover {
 }
 
 footer {
-  position: static;
+  position: fixed;
+  bottom: 20px;
   text-align: center;
   margin-top: 15px;
   font-size: 13px;
   color: #555;
+  z-index: 10;
 }
 
 .oculto {
@@ -207,13 +207,15 @@ footer {
 }
 
 .ticket-number {
-  display: inline-block;
+  display: block;
+  text-align: center;
   background: linear-gradient(to right, #115e59, #0d9488);
   color: white;
   padding: 8px 20px;
   border-radius: 999px;
-  margin-top: 5px;
+  margin: 15px auto;
   font-size: 14px;
+  width: fit-content;
 }
 
 .ticket-number p {
@@ -227,6 +229,9 @@ footer {
   border-top: 1px dashed #ccc;
   border-bottom: 1px dashed #ccc;
   padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .Ticket p {
@@ -234,8 +239,28 @@ footer {
   color: #0b4f6c;
   font-family: sans-serif, Arial;
   font-weight: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .Ticket strong {
   color: #134e4a;
+}
+
+#ticketDescripcion{
+  display: block;
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-top: 5px;
+}
+
+#ticketDescripcion::-webkit-scrollbar {
+  width: 6px;
+}
+
+#ticketDescripcion::-webkit-scrollbar-thumb {
+  background-color: #0f766e;
+  border-radius: 3px;
 }
