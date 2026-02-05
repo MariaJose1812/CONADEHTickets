@@ -6,38 +6,55 @@
     <title>CONADEH - Iniciar Sesión</title>
     <link rel="stylesheet" href="./login.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 </head>
 <body>
 
-    <div class="auth-card">
-        <h2 style="color: #034f36;"><i class="fa-solid fa-user-lock"></i> Iniciar Sesión</h2>
-        <p>Sistema de Tickets</p>
-        
-        <form id="loginForm">
-            <div class="input-group">
-                <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="correo" placeholder="Correo institucional" required>
+    <div class="main-container">
+        <div class="left-section">
+            <div class="branding">
+                <h2>Sistema de Tickets</h2>
+
+                <img src="../Background_Images/logo completo.png" alt="logo">
             </div>
+        </div>
 
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" id="password" placeholder="Contraseña" required>
+        <div class="right-section">
+            <div class="Login-box">
+                
+                <h2>Inicia Sesión</h2>
+                <p>Ingresa tus credenciales para continuar</p>
+                
+                <form id="loginForm">
+                    <label for="correo">Correo Electrónico</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="correo" placeholder="ejemplo@conadeh.hn" required>
+                    </div>
+
+                    <label for="password">Contraseña</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-key"></i>
+                        <input type="password" id="password" placeholder="********" minlength="8" required>
+                    </div>
+
+                    <hr>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <input type="password" id="codigoSoporte" placeholder="Código para personal de TI">
+                    </div>
+
+                        <button type="submit">
+                            INGRESAR 
+                        </button>
+
+                </form>
+
+                <p class="link-text">
+                    ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+                </p>
             </div>
-
-            <div class="group-input" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                <i class="fa-solid fa-user-shield" style="color: #034f36;"></i>
-                <input type="password" id="codigoSoporte" placeholder="Código de Personal TI (Opcional)">
-            </div>
-
-            <button type="submit" style="width: 100%; margin-top: 1rem;">
-                Ingresar <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </form>
-
-        <p class="link-text">
-            ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
-        </p>
+        </div>
     </div>
 
     <script src="auth.js"></script>
