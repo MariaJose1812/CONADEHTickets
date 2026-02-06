@@ -20,13 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const correo = document.getElementById("correo").value;
     const descripcion = document.getElementById("descripcion").value;
 
-    let valido = true;
-
-    // Validar que todos los campos estén completos
-    if (!idDep || !nombre || !correo || !descripcion) {
-      alert("Por favor, complete todos los campos.");
-      valido = false;
-    }
 
       btnSubmit.classList.add("button-loading");
       btnSubmit.disabled = true; // Deshabilita para evitar doble envío
@@ -34,10 +27,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       // Enviar datos al backend
-      const response = await fetch("http://localhost:3000/api/tickets", {
+      const response = await fetch("http://localhost:3000/api/admin/tickets", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
           idDep: parseInt(idDep),
@@ -49,7 +43,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        alert("Error al crear el ticket: " + (errorData.error || "Error desconocido"));
+        Swal.fire ({
+          icon: 'error',
+          title: 'Error al crear el ticket',
+          text: errorData.error || 'Error desconocido',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#0f766e',
+          customClass: {
+            popup: "border-radius-16"
+          }
+        });
+
         return;
       }
 
@@ -81,8 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
       btnText.textContent = textoOriginal;
     }
 
-      cargarTickets();
-      ActivarBusqueda();
+
 
   });
 
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Función para cargar departamentos del backend
   async function cargarDepartamentos() {
     try {
-      const response = await fetch("http://localhost:3000/api/departamentos");
+      const response = await fetch("http://localhost:3000/api/public/departamentos");
       
       if (!response.ok) {
         throw new Error("Error al obtener departamentos");
@@ -131,16 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return descripcion.length > 0 && descripcion.length <= 500;
   }
 
-  function mostrarError(idCampo, mensaje) {
-    const campo = document.getElementById(idCampo);
-    campo.classList.add("error");
-    
-    const error = document.createElement("div");
-    error.className = "error-message";
-    error.textContent = mensaje;
-    campo.parentElement.appendChild(error);
-  }
-
+  
   const btnNuevoTicket = document.getElementById("btn-nuevoticket");
 
   btnNuevoTicket.addEventListener("click", function() {

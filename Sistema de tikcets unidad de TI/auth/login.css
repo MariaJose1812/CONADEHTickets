@@ -57,7 +57,7 @@ body {
 /* SECCIÓN DERECHA (AZUL)*/
 .right-section {
     width: 45%;
-    background: #154c79; /* Azul oscuro */
+    background: #154c79; 
     display: flex;
     justify-content: center;
     align-items: center;
