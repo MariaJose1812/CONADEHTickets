@@ -3,14 +3,116 @@ document.addEventListener("DOMContentLoaded", function () {
   ActivarBusqueda();
 });
 
-/* estado*/
+
 let ALL_TICKETS = [];
 let FILTERED_TICKETS = [];
+let TICKETS_BY_ID = new Map();
 
 const PAGE_SIZE = 20;
 let CURRENT_PAGE = 1;
 
-/* cargar tickets */
+let CURRENT_STATUS_FILTER = null; // "Abierto" | "En Proceso" | "Terminado" | null
+
+// Para evitar duplicar eventos del modal
+let MODAL_WIRED = false;
+
+
+function normalizarEstado(e) {
+  return String(e || "").replace(/\s+/g, " ").trim();
+}
+
+function safe(v) {
+  return v ?? "";
+}
+
+function estadoClase(estado) {
+  const e = (estado || "").toLowerCase().trim();
+  if (e === "abierto") return "estado-abierto";
+  if (e === "en proceso") return "estado-en-proceso";
+  if (e === "terminado") return "estado-terminado";
+  return "estado-pendiente";
+}
+
+function formatearFechaHora(fechaISO) {
+  if (!fechaISO) return "—";
+  const d = new Date(fechaISO);
+  if (isNaN(d.getTime())) return String(fechaISO);
+
+  const fecha = d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const hora = d.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return `${fecha} ${hora}`;
+}
+
+/* Tarjetas*/
+function actualizarTarjetas() {
+  const cA = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "Abierto").length;
+  const cP = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "En Proceso").length;
+  const cT = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "Terminado").length;
+
+  const elA = document.getElementById("count-abierto");
+  const elP = document.getElementById("count-proceso");
+  const elT = document.getElementById("count-terminado");
+
+  if (elA) elA.textContent = cA;
+  if (elP) elP.textContent = cP;
+  if (elT) elT.textContent = cT;
+
+  // resalto de tarjeta activa
+  document.querySelectorAll(".status-card").forEach((card) => {
+    const est = card.dataset.estado;
+    card.classList.toggle("is-active", CURRENT_STATUS_FILTER === est);
+  });
+}
+
+function aplicarFiltros() {
+  const input = document.getElementById("search-ticket");
+  const texto = (input?.value || "").toLowerCase().trim();
+
+  const base = CURRENT_STATUS_FILTER
+    ? ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === CURRENT_STATUS_FILTER)
+    : [...ALL_TICKETS];
+
+  FILTERED_TICKETS = base.filter((t) => {
+    const contenido = [`#${t.IdTicket}`, t.NomDep, t.CorreoContacto, t.Estado]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return contenido.includes(texto);
+  });
+
+  CURRENT_PAGE = 1;
+  renderTablaPaginada();
+  renderPaginacion();
+}
+
+function activarTarjetasEstado() {
+  document.querySelectorAll(".status-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      CURRENT_STATUS_FILTER = card.dataset.estado;
+      actualizarTarjetas();
+      aplicarFiltros();
+    });
+  });
+
+  const btn = document.getElementById("btn-ver-todos");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      CURRENT_STATUS_FILTER = null;
+      actualizarTarjetas();
+      aplicarFiltros();
+    });
+  }
+}
+
+/* Carga Tickets */
 async function cargarTickets() {
   try {
     const token = localStorage.getItem("token");
@@ -36,14 +138,21 @@ async function cargarTickets() {
 
 function mostrarTickets(tickets) {
   ALL_TICKETS = tickets || [];
+
+  //  map para el modal
+  TICKETS_BY_ID = new Map(ALL_TICKETS.map((t) => [Number(t.IdTicket), t]));
+
   FILTERED_TICKETS = [...ALL_TICKETS];
   CURRENT_PAGE = 1;
+
+  activarTarjetasEstado();
+  actualizarTarjetas();
 
   renderTablaPaginada();
   renderPaginacion();
 }
 
-/*render 20 tablas */
+/* Tabla Paginada */
 function renderTablaPaginada() {
   const container = document.getElementById("tickets-container");
   container.innerHTML = "";
@@ -84,6 +193,7 @@ function renderTablaPaginada() {
   const tbody = document.getElementById("tickets-body");
 
   pageItems.forEach((ticket) => {
+    const estado = normalizarEstado(ticket.Estado);
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -92,18 +202,18 @@ function renderTablaPaginada() {
       <td title="${safe(ticket.CorreoContacto)}">${safe(ticket.CorreoContacto)}</td>
 
       <td>
-        <select class="estado-select ${estadoClase(ticket.Estado)}" data-id="${ticket.IdTicket}">
-          <option value="Abierto" ${ticket.Estado === "Abierto" ? "selected" : ""}>Abierto</option>
-          <option value="En Proceso" ${ticket.Estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
-          <option value="Terminado" ${ticket.Estado === "Terminado" ? "selected" : ""}>Terminado</option>
+        <select class="estado-select ${estadoClase(estado)}" data-id="${ticket.IdTicket}">
+          <option value="Abierto" ${estado === "Abierto" ? "selected" : ""}>Abierto</option>
+          <option value="En Proceso" ${estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
+          <option value="Terminado" ${estado === "Terminado" ? "selected" : ""}>Terminado</option>
         </select>
       </td>
 
-     <td class="td-right">
-  <button class="btn-ver" type="button" data-id="${ticket.IdTicket}">
-    Ver detalles
-  </button>
-</td>
+      <td class="td-right">
+        <button class="btn-ver" type="button" data-id="${ticket.IdTicket}">
+          Ver detalles
+        </button>
+      </td>
     `;
 
     tbody.appendChild(tr);
@@ -166,7 +276,6 @@ function renderPaginacion() {
 
   controls.appendChild(prev);
 
-  // Ventana de páginas
   const windowSize = 5;
   let from = Math.max(1, CURRENT_PAGE - 2);
   let to = Math.min(totalPages, from + windowSize - 1);
@@ -212,14 +321,13 @@ function makePagerBtn(text, disabled, onClick) {
   return b;
 }
 
-/* cambio de estado */
+/* Cambio de estado */
 function activarCambioEstado() {
   document.querySelectorAll(".estado-select").forEach((select) => {
     select.addEventListener("change", async function () {
       const nuevoEstado = this.value;
       const idTicket = this.dataset.id;
 
-      // cambia color visual inmediato
       this.className = `estado-select ${estadoClase(nuevoEstado)}`;
 
       try {
@@ -231,16 +339,19 @@ function activarCambioEstado() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ Estado: nuevoEstado }),
+          body: JSON.stringify({ nuevoEstado: nuevoEstado }),
         });
 
-        // opcional: también actualizar en memoria (ALL_TICKETS y FILTERED_TICKETS)
+        // actualizar en memoria
         ALL_TICKETS = ALL_TICKETS.map((t) =>
-          t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t,
+          t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t
         );
-        FILTERED_TICKETS = FILTERED_TICKETS.map((t) =>
-          t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t,
-        );
+
+        // actualizar map global
+        TICKETS_BY_ID = new Map(ALL_TICKETS.map((t) => [Number(t.IdTicket), t]));
+
+        actualizarTarjetas();
+        aplicarFiltros();
       } catch (error) {
         alert("Error al actualizar el estado");
         console.error(error);
@@ -249,45 +360,74 @@ function activarCambioEstado() {
   });
 }
 
-/* Boton ver*/
+/* Modal ver detalles */
 function activarBotonVer() {
+  const modal = document.getElementById("modalDetalles");
+  const overlay = document.getElementById("modalOverlay");
+  const btnClose = document.getElementById("modalClose");
+  const btnOk = document.getElementById("modalOk");
+
+  if (!modal) return;
+
+  const openModal = () => {
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  if (!MODAL_WIRED) {
+    MODAL_WIRED = true;
+
+    overlay?.addEventListener("click", closeModal);
+    btnClose?.addEventListener("click", closeModal);
+    btnOk?.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+  }
+
+  // listeners para los botones de esta renderización
   document.querySelectorAll(".btn-ver").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const id = btn.dataset.id;
-      alert(`Ver detalles del Ticket #${id}`);
+      const id = Number(btn.dataset.id);
+      const ticket = TICKETS_BY_ID.get(id);
+
+      if (!ticket) {
+        alert("No se encontró la información del ticket.");
+        return;
+      }
+
+      document.getElementById("d-id").textContent = `#${ticket.IdTicket}`;
+      document.getElementById("d-nombre").textContent = ticket.NombreContacto || "—";
+      document.getElementById("d-desc").textContent = ticket.DescripcionProblema || "—";
+
+      // estado con color
+      const estado = (ticket.Estado || "").trim();
+      const elEstado = document.getElementById("d-estado");
+      elEstado.textContent = estado || "—";
+      elEstado.className = "pill";
+
+      const e = estado.toLowerCase();
+      if (e === "abierto") elEstado.classList.add("abierto");
+      else if (e === "en proceso") elEstado.classList.add("proceso");
+      else if (e === "terminado") elEstado.classList.add("terminado");
+
+      // fecha/hora
+      document.getElementById("d-fecha").textContent = formatearFechaHora(ticket.FechaCreacion);
+
+      openModal();
     });
   });
 }
 
+/* Búsqueda */
 function ActivarBusqueda() {
   const input = document.getElementById("search-ticket");
-
-  input.addEventListener("keyup", function () {
-    const texto = input.value.toLowerCase().trim();
-
-    FILTERED_TICKETS = ALL_TICKETS.filter((t) => {
-      const contenido = [`#${t.IdTicket}`, t.NomDep, t.CorreoContacto, t.Estado]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      return contenido.includes(texto);
-    });
-
-    CURRENT_PAGE = 1;
-    renderTablaPaginada();
-    renderPaginacion();
-  });
-}
-
-function safe(v) {
-  return v ?? "";
-}
-
-function estadoClase(estado) {
-  const e = (estado || "").toLowerCase().trim();
-  if (e === "abierto") return "estado-abierto";
-  if (e === "en proceso") return "estado-en-proceso";
-  if (e === "terminado") return "estado-terminado";
-  return "estado-pendiente";
+  if (!input) return;
+  input.addEventListener("keyup", aplicarFiltros);
 }
