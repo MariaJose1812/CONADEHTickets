@@ -65,6 +65,7 @@
     </div>
 
     <!-- Modal Detalles -->
+
     <div class="modal" id="modalDetalles" aria-hidden="true">
       <div class="modal__overlay" id="modalOverlay"></div>
 
@@ -118,8 +119,51 @@
         <div class="modal__footer">
           <button class="modal__btn" id="modalOk" type="button">Cerrar</button>
         </div>
+
+<div class="modal" id="modalDetalles" aria-hidden="true">
+  <div class="modal__overlay" id="modalOverlay"></div>
+
+  <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__header">
+      <h3 class="modal__title" id="modalTitle">Detalles del Ticket</h3>
+      <button class="modal__close" id="modalClose" type="button" aria-label="Cerrar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal__body">
+      <div class="modal__row">
+        <div class="modal__label">Ticket</div>
+        <div class="modal__value" id="d-id">—</div>
+
+      </div>
+
+      <div class="modal__row">
+        <div class="modal__label">Nombre</div>
+        <div class="modal__value" id="d-nombre">—</div>
+      </div>
+
+      <div class="modal__row">
+        <div class="modal__label">Estado</div>
+        <div class="modal__value"><span class="pill" id="d-estado">—</span></div>
+      </div>
+
+      <div class="modal__row">
+        <div class="modal__label">Fecha y hora</div>
+        <div class="modal__value" id="d-fecha">—</div>
+      </div>
+
+      <div class="modal__row modal__row--full">
+        <div class="modal__label">Descripción</div>
+        <div class="modal__value modal__desc" id="d-desc">—</div>
       </div>
     </div>
+
+    <div class="modal__footer">
+      <button class="modal__btn" id="modalOk" type="button">Cerrar</button>
+    </div>
+  </div>
+</div>
 
     <script src="dashboard.js"></script>
   </body>

@@ -579,4 +579,4 @@ footer {
 
 @media (max-width: 520px){
   .modal__row{ grid-template-columns: 1fr; }
-}
+

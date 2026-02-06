@@ -27,10 +27,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       // Enviar datos al backend
-      const response = await fetch("http://localhost:3000/api/tickets", {
+      const response = await fetch("http://localhost:3000/api/admin/tickets", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
           idDep: parseInt(idDep),
@@ -84,8 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
       btnText.textContent = textoOriginal;
     }
 
-      cargarTickets();
-      ActivarBusqueda();
+
 
   });
 
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Función para cargar departamentos del backend
   async function cargarDepartamentos() {
     try {
-      const response = await fetch("http://localhost:3000/api/departamentos");
+      const response = await fetch("http://localhost:3000/api/public/departamentos");
       
       if (!response.ok) {
         throw new Error("Error al obtener departamentos");
