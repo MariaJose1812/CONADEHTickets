@@ -117,7 +117,7 @@ async function cargarTickets() {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch("http://localhost:3000/api/tickets", {
+    const response = await fetch("http://localhost:3000/api/admin/tickets", {
       method: "GET",
       headers: {
         "content-type": "application/json",
