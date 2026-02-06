@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   ActivarBusqueda();
 });
 
-
 let ALL_TICKETS = [];
 let FILTERED_TICKETS = [];
 let TICKETS_BY_ID = new Map();
@@ -16,9 +15,10 @@ let CURRENT_STATUS_FILTER = null; // "Abierto" | "En Proceso" | "Terminado" | nu
 // Para evitar duplicar eventos del modal
 let MODAL_WIRED = false;
 
-
 function normalizarEstado(e) {
-  return String(e || "").replace(/\s+/g, " ").trim();
+  return String(e || "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function safe(v) {
@@ -52,9 +52,15 @@ function formatearFechaHora(fechaISO) {
 
 /* Tarjetas*/
 function actualizarTarjetas() {
-  const cA = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "Abierto").length;
-  const cP = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "En Proceso").length;
-  const cT = ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === "Terminado").length;
+  const cA = ALL_TICKETS.filter(
+    (t) => normalizarEstado(t.Estado) === "Abierto",
+  ).length;
+  const cP = ALL_TICKETS.filter(
+    (t) => normalizarEstado(t.Estado) === "En Proceso",
+  ).length;
+  const cT = ALL_TICKETS.filter(
+    (t) => normalizarEstado(t.Estado) === "Terminado",
+  ).length;
 
   const elA = document.getElementById("count-abierto");
   const elP = document.getElementById("count-proceso");
@@ -71,12 +77,14 @@ function actualizarTarjetas() {
   });
 }
 
-function aplicarFiltros() {
+function aplicarFiltros(resetPage = true) {
   const input = document.getElementById("search-ticket");
   const texto = (input?.value || "").toLowerCase().trim();
 
   const base = CURRENT_STATUS_FILTER
-    ? ALL_TICKETS.filter((t) => normalizarEstado(t.Estado) === CURRENT_STATUS_FILTER)
+    ? ALL_TICKETS.filter(
+        (t) => normalizarEstado(t.Estado) === CURRENT_STATUS_FILTER,
+      )
     : [...ALL_TICKETS];
 
   FILTERED_TICKETS = base.filter((t) => {
@@ -88,7 +96,6 @@ function aplicarFiltros() {
     return contenido.includes(texto);
   });
 
-  CURRENT_PAGE = 1;
   renderTablaPaginada();
   renderPaginacion();
 }
@@ -333,25 +340,39 @@ function activarCambioEstado() {
       try {
         const token = localStorage.getItem("token");
 
-        await fetch(`http://localhost:3000/api/tickets/${idTicket}/estado`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        const resp = await fetch(
+          `http://localhost:3000/api/admin/tickets/${idTicket}/estado`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ nuevoEstado: nuevoEstado }),
           },
-          body: JSON.stringify({ nuevoEstado: nuevoEstado }),
-        });
+        );
+
+        if (!resp.ok) {
+          let msg = "No se pudo actualizar el estado";
+          try {
+            const err = await resp.json();
+            msg = err.error || msg;
+          } catch {}
+          throw new Error(msg);
+        }
 
         // actualizar en memoria
         ALL_TICKETS = ALL_TICKETS.map((t) =>
-          t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t
+          t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t,
         );
 
         // actualizar map global
-        TICKETS_BY_ID = new Map(ALL_TICKETS.map((t) => [Number(t.IdTicket), t]));
+        TICKETS_BY_ID = new Map(
+          ALL_TICKETS.map((t) => [Number(t.IdTicket), t]),
+        );
 
         actualizarTarjetas();
-        aplicarFiltros();
+        aplicarFiltros(false);
       } catch (error) {
         alert("Error al actualizar el estado");
         console.error(error);
@@ -403,8 +424,10 @@ function activarBotonVer() {
       }
 
       document.getElementById("d-id").textContent = `#${ticket.IdTicket}`;
-      document.getElementById("d-nombre").textContent = ticket.NombreContacto || "—";
-      document.getElementById("d-desc").textContent = ticket.DescripcionProblema || "—";
+      document.getElementById("d-nombre").textContent =
+        ticket.NombreContacto || "—";
+      document.getElementById("d-desc").textContent =
+        ticket.DescripcionProblema || "—";
 
       // estado con color
       const estado = (ticket.Estado || "").trim();
@@ -418,7 +441,9 @@ function activarBotonVer() {
       else if (e === "terminado") elEstado.classList.add("terminado");
 
       // fecha/hora
-      document.getElementById("d-fecha").textContent = formatearFechaHora(ticket.FechaCreacion);
+      document.getElementById("d-fecha").textContent = formatearFechaHora(
+        ticket.FechaCreacion,
+      );
 
       openModal();
     });

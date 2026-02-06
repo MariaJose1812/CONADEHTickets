@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const errorData = await response.json();
         Swal.fire ({
           icon: 'error',
-          title: 'Error al crear el ticket',
+          title: 'Datos incompletos',
           text: errorData.error || 'Error desconocido',
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#0f766e',
@@ -85,10 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
       btnText.textContent = textoOriginal;
     }
 
-
-
   });
-
 
   // Función para cargar departamentos del backend
   async function cargarDepartamentos() {
