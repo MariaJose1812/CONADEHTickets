@@ -12,24 +12,35 @@
     <title>Bienvenido al Sistema de Tickets</title>
   </head>
   <body>
-    <nav class="navbar">
-      <div class="nav-left">
-        <i class="titulo"></i>
-        <span>Sistema de Tickets - Unidad de TI</span>
-      </div>
+ <nav class="top-navbar">
+  <div class="navbar-content">
+    <div class="navbar-title">
+      <img src="../Background_Images/infotec.jpg" class="navbar-logo" />
+      <span>Sistema de Tickets - Unidad IT</span>
+    </div>
 
-      <div class="nav-right">
-        <a href="#"><i class="fa-solid fa-user-circle"></i> Perfil</a>
-        <a href="#"><i class="fa-solid fa-sign-out-alt"></i> Cerrar sesión</a>
-      </div>
-    </nav>
-
+    <button class="logout-btn" type="button" onclick="cerrarSesion()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
+</nav>
     <div class="tickets-container">
       <h2><i class="fa-solid fa-ticket"></i> Tickets Registrados</h2>
 
       <div class="layout">
-        <!-- Columna izquierda -->
+        <!-- Columnas Izquierda -->
+
         <aside class="sidebar">
+          <div
+            class="status-card historial"
+            id="btn-historial"
+            role="button"
+            tabindex="0"
+          >
+            <div class="status-title">Historial de Cambios</div>
+            <div class="status-count">🔃</div>
+          </div>
+
           <div class="status-card" data-estado="Abierto" id="card-abierto">
             <div class="status-title">Abiertos</div>
             <div class="status-count" id="count-abierto">0</div>
@@ -50,7 +61,7 @@
           </button>
         </aside>
 
-        <!-- Columna derecha (tu contenido actual) -->
+        <!-- Columna derecha -->
         <section class="content">
           <input
             type="text"
@@ -64,50 +75,87 @@
       </div>
     </div>
 
-    <!-- Modal Detalles -->
-<div class="modal" id="modalDetalles" name="modalDetalles" aria-hidden="true">
-  <div class="modal__overlay" id="modalOverlay"></div>
+    <!-- Tarjeta Detalles -->
+    <div
+      class="modal"
+      id="modalDetalles"
+      name="modalDetalles"
+      aria-hidden="true"
+    >
+      <div class="modal__overlay" id="modalOverlay"></div>
 
-  <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal__header">
-      <h3 class="modal__title" id="modalTitle">Detalles del Ticket</h3>
-      <button class="modal__close" id="modalClose" type="button" aria-label="Cerrar">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <div
+        class="modal__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal__header">
+          <h3 class="modal__title" id="modalTitle">Detalles del Ticket</h3>
+          <button
+            class="modal__close"
+            id="modalClose"
+            type="button"
+            aria-label="Cerrar"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal__body">
+          <div class="modal__row">
+            <div class="modal__label">Ticket</div>
+            <div class="modal__value" id="d-id">—</div>
+          </div>
+
+          <div class="modal__row">
+            <div class="modal__label">Nombre</div>
+            <div class="modal__value" id="d-nombre">—</div>
+          </div>
+
+          <div class="modal__row">
+            <div class="modal__label">Estado</div>
+            <div class="modal__value">
+              <span class="pill" id="d-estado">—</span>
+            </div>
+          </div>
+
+          <div class="modal__row">
+            <div class="modal__label">Fecha y hora</div>
+            <div class="modal__value" id="d-fecha">—</div>
+          </div>
+
+          <div class="modal__row modal__row--full">
+            <div class="modal__label">Descripción</div>
+            <div class="modal__value modal__desc" id="d-desc">—</div>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button class="modal__btn" id="modalOk" type="button">Cerrar</button>
+        </div>
+      </div>
     </div>
 
-    <div class="modal__body">
-      <div class="modal__row">
-        <div class="modal__label">Ticket</div>
-        <div class="modal__value" id="d-id">—</div>
+    <div id="historialOverlay" class="historial-overlay"></div>
+
+    <aside id="historialPanel" class="historial-panel" aria-hidden="true">
+      <div class="historial-header">
+        <h3 class="historial-title">Historial de cambios</h3>
+        <button
+          id="historialClose"
+          type="button"
+          class="historial-close"
+          aria-label="Cerrar"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
-      <div class="modal__row">
-        <div class="modal__label">Nombre</div>
-        <div class="modal__value" id="d-nombre">—</div>
+      <div id="historialList" class="historial-body">
+        <p class="historial-loading">Cargando historial…</p>
       </div>
-
-      <div class="modal__row">
-        <div class="modal__label">Estado</div>
-        <div class="modal__value"><span class="pill" id="d-estado">—</span></div>
-      </div>
-
-      <div class="modal__row">
-        <div class="modal__label">Fecha y hora</div>
-        <div class="modal__value" id="d-fecha">—</div>
-      </div>
-
-      <div class="modal__row modal__row--full">
-        <div class="modal__label">Descripción</div>
-        <div class="modal__value modal__desc" id="d-desc">—</div>
-      </div>
-    </div>
-
-    <div class="modal__footer">
-      <button class="modal__btn" id="modalOk" type="button">Cerrar</button>
-    </div>
-  </div>
-</div>
+    </aside>
 
     <script src="dashboard.js"></script>
   </body>

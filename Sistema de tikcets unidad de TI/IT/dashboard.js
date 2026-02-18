@@ -10,6 +10,11 @@ let TICKETS_BY_ID = new Map();
 const PAGE_SIZE = 20;
 let CURRENT_PAGE = 1;
 
+function cerrarSesion() {
+  localStorage.removeItem("token");
+  sessionStorage.clear();
+  window.location.replace("../auth/login.html");
+}
 let CURRENT_STATUS_FILTER = null; // "Abierto" | "En Proceso" | "Terminado" | null
 
 // Para evitar duplicar eventos del modal
@@ -33,21 +38,23 @@ function estadoClase(estado) {
   return "estado-pendiente";
 }
 
+/* Fecha y Hora */
+
 function formatearFechaHora(fechaISO) {
   if (!fechaISO) return "—";
+
   const d = new Date(fechaISO);
   if (isNaN(d.getTime())) return String(fechaISO);
 
-  const fecha = d.toLocaleDateString(undefined, {
+  return new Intl.DateTimeFormat("es-HN", {
+    timeZone: "America/Tegucigalpa",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  });
-  const hora = d.toLocaleTimeString(undefined, {
     hour: "2-digit",
     minute: "2-digit",
-  });
-  return `${fecha} ${hora}`;
+    hour12: true,
+  }).format(d);
 }
 
 /* Tarjetas*/
@@ -88,7 +95,7 @@ function aplicarFiltros(resetPage = true) {
     : [...ALL_TICKETS];
 
   FILTERED_TICKETS = base.filter((t) => {
-    const contenido = [`#${t.IdTicket}`, t.NomDep, t.CorreoContacto, t.Estado]
+    const contenido = [`#${t.IdTicket}`, t.NombreContacto, t.NomDep, t.Estado]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
@@ -186,8 +193,8 @@ function renderTablaPaginada() {
     <thead>
       <tr>
         <th>N° de tickets</th>
+        <th>Nombre</th>
         <th>Departamento</th>
-        <th>Correo</th>
         <th>Estado</th>
         <th class="th-right">Acción</th>
       </tr>
@@ -205,16 +212,18 @@ function renderTablaPaginada() {
 
     tr.innerHTML = `
       <td class="ticket-id">#${ticket.IdTicket}</td>
+      <td title="${safe(ticket.NombreContacto)}">${safe(ticket.NombreContacto)}</td>
       <td title="${safe(ticket.NomDep)}">${safe(ticket.NomDep)}</td>
-      <td title="${safe(ticket.CorreoContacto)}">${safe(ticket.CorreoContacto)}</td>
-
-      <td>
-        <select class="estado-select ${estadoClase(estado)}" data-id="${ticket.IdTicket}">
-          <option value="Abierto" ${estado === "Abierto" ? "selected" : ""}>Abierto</option>
-          <option value="En Proceso" ${estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
-          <option value="Terminado" ${estado === "Terminado" ? "selected" : ""}>Terminado</option>
-        </select>
-      </td>
+    <td>
+  <select
+    class="estado-select ${estadoClase(estado)}"
+    data-id="${ticket.IdTicket}"
+    data-prev="${estado}">
+    <option value="Abierto" ${estado === "Abierto" ? "selected" : ""}>Abierto</option>
+    <option value="En Proceso" ${estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
+    <option value="Terminado" ${estado === "Terminado" ? "selected" : ""}>Terminado</option>
+  </select>
+</td>
 
       <td class="td-right">
         <button class="btn-ver" type="button" data-id="${ticket.IdTicket}">
@@ -332,8 +341,9 @@ function makePagerBtn(text, disabled, onClick) {
 function activarCambioEstado() {
   document.querySelectorAll(".estado-select").forEach((select) => {
     select.addEventListener("change", async function () {
-      const nuevoEstado = this.value;
       const idTicket = this.dataset.id;
+      const prevEstado = this.dataset.prev || this.value;
+      const nuevoEstado = this.value;
 
       this.className = `estado-select ${estadoClase(nuevoEstado)}`;
 
@@ -348,7 +358,7 @@ function activarCambioEstado() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ nuevoEstado: nuevoEstado }),
+            body: JSON.stringify({ nuevoEstado }),
           },
         );
 
@@ -361,12 +371,13 @@ function activarCambioEstado() {
           throw new Error(msg);
         }
 
+        // si todo ok, guarda el estado previo
+        this.dataset.prev = nuevoEstado;
+
         // actualizar en memoria
         ALL_TICKETS = ALL_TICKETS.map((t) =>
           t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t,
         );
-
-        // actualizar map global
         TICKETS_BY_ID = new Map(
           ALL_TICKETS.map((t) => [Number(t.IdTicket), t]),
         );
@@ -374,6 +385,9 @@ function activarCambioEstado() {
         actualizarTarjetas();
         aplicarFiltros(false);
       } catch (error) {
+        // revertir UI si falla
+        this.value = prevEstado;
+        this.className = `estado-select ${estadoClase(prevEstado)}`;
         alert("Error al actualizar el estado");
         console.error(error);
       }
@@ -442,7 +456,7 @@ function activarBotonVer() {
 
       // fecha/hora
       document.getElementById("d-fecha").textContent = formatearFechaHora(
-        ticket.FechaCreacion,
+        ticket.FecCreacion,
       );
 
       openModal();
@@ -455,4 +469,113 @@ function ActivarBusqueda() {
   const input = document.getElementById("search-ticket");
   if (!input) return;
   input.addEventListener("keyup", aplicarFiltros);
+}
+
+// ===== HISTORIAL EN DASHBOARD (NUEVO) =====
+(function wireHistorialPanel() {
+  const btn = document.getElementById("btn-historial");
+  const panel = document.getElementById("historialPanel");
+  const overlay = document.getElementById("historialOverlay");
+  const close = document.getElementById("historialClose");
+  const list = document.getElementById("historialList");
+
+  if (!btn || !panel || !overlay || !close || !list) return;
+
+  const open = async () => {
+    panel.classList.add("is-open");
+    overlay.classList.add("is-open");
+    panel.setAttribute("aria-hidden", "false");
+    await cargarHistorial(list);
+  };
+
+  const hide = () => {
+    panel.classList.remove("is-open");
+    overlay.classList.remove("is-open");
+    panel.setAttribute("aria-hidden", "true");
+  };
+
+  btn.addEventListener("click", open);
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") open();
+  });
+
+  close.addEventListener("click", hide);
+  overlay.addEventListener("click", hide);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") hide();
+  });
+})();
+
+function historialPillClase(estado) {
+  const e = (estado || "").toLowerCase().trim();
+  if (e === "abierto") return "historial-pill abierto";
+  if (e === "en proceso") return "historial-pill proceso";
+  if (e === "terminado") return "historial-pill terminado";
+  return "historial-pill";
+}
+
+async function cargarHistorial(container) {
+  container.innerHTML = "<p class='historial-loading'>Cargando historial…</p>";
+
+  try {
+    const token = localStorage.getItem("token");
+
+    // ✅ Endpoint del historial
+    const res = await fetch(
+      "http://localhost:3000/api/admin/tickets/historial",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!res.ok) {
+      let detalle = "";
+      try {
+        const err = await res.json();
+        detalle = err.detalle || err.error || JSON.stringify(err);
+      } catch {
+        detalle = await res.text();
+      }
+      console.error("Historial backend error:", res.status, detalle);
+      throw new Error("No se pudo obtener historial");
+    }
+
+    const data = await res.json();
+    const items = data.historial || [];
+
+    renderHistorial(container, items);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML =
+      "<p class='historial-loading'>Error al cargar historial.</p>";
+  }
+}
+
+function renderHistorial(container, items) {
+  if (!items.length) {
+    container.innerHTML =
+      "<p class='historial-loading'>No hay cambios registrados.</p>";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  items.forEach((h) => {
+    const div = document.createElement("div");
+    div.className = "historial-item";
+
+    div.innerHTML = `
+      <div class="historial-top">
+        <div class="historial-ticket">Ticket #${h.IdTicket}</div>
+        <div class="${historialPillClase(h.Estado)}">${h.Estado || "—"}</div>
+      </div>
+      <div class="historial-meta">
+        <div><strong>Atendido por:</strong> ${h.IdUsuario || "—"}</div>
+        <div><strong>Fecha:</strong> ${formatearFechaHora(h.FecCreacion)}</div>
+
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
 }
