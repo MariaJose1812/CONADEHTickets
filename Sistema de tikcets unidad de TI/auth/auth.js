@@ -1,11 +1,9 @@
 const API_URL = "http://localhost:3000";
 let isSubmitting = false;
 
-/* === Alerta reutilizable (SweetAlert2 si existe, si no usa alert) === */
 function mostrarError(titulo, mensaje, onAceptar) {
   const msg = mensaje || "Error desconocido";
 
- 
   if (typeof Swal !== "undefined" && Swal.fire) {
     return Swal.fire({
       icon: "error",
@@ -14,24 +12,20 @@ function mostrarError(titulo, mensaje, onAceptar) {
       confirmButtonText: "Aceptar",
       confirmButtonColor: "#0f766e",
       allowOutsideClick: false,
-
-      // Me evita el salto del fondo
       heightAuto: false,
       scrollbarPadding: false,
-
       customClass: { popup: "border-radius-16" },
     }).then(() => {
       if (typeof onAceptar === "function") onAceptar();
     });
   }
 
-  // Fallback si Swal no existe
   alert(`${titulo}\n\n${msg}`);
   if (typeof onAceptar === "function") onAceptar();
   return Promise.resolve();
 }
 
-/*  LOGIN  */
+/* ===================== LOGIN ===================== */
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (isSubmitting) return;
@@ -48,21 +42,22 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
 
   const correoEl = document.getElementById("correo");
   const passEl = document.getElementById("password");
+  const codigoEl = document.getElementById("codigoSoporte");
 
   try {
     const correo = correoEl?.value?.trim() || "";
     const password = passEl?.value || "";
+    const codigoSoporte = codigoEl?.value?.trim() || "";
 
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo, password }),
+      body: JSON.stringify({ correo, password, codigoSoporte }),
     });
 
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      // Si el backend no manda JSON con error
       throw { error: data?.error || "Credenciales inválidas" };
     }
 
@@ -70,22 +65,38 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     localStorage.setItem("user", JSON.stringify(data.user));
 
     setTimeout(() => {
-      if (data.user.rol === "SOPORTE") {
-        console.log("Redirigiendo a dashboard de IT");
+      if (
+        String(data.user?.rol || "")
+          .trim()
+          .toUpperCase() === "SOPORTE"
+      ) {
         window.location.href = "../IT/dashboard.html";
       } else {
-        console.log("Redirigiendo a entrada de tickets");
         window.location.href = "../tickets/entrada.html";
       }
-    }, 500);
+    }, 200);
   } catch (err) {
+    const msg = err?.error || "Verifique su correo y contraseña";
+    const lower = msg.toLowerCase();
+
+    const esCodigo =
+      lower.includes("código") ||
+      lower.includes("soporte") ||
+      lower.includes("debe ingresar");
+
     await mostrarError(
-      "Credenciales inválidas",
-      err?.error || "Verifique su correo y contraseña",
+      esCodigo ? "Código inválido" : "Credenciales inválidas",
+      msg,
       () => {
-        if (correoEl) correoEl.value = "";
-        if (passEl) passEl.value = "";
-        correoEl?.focus();
+        if (esCodigo) {
+          if (passEl) passEl.value = "";
+          if (codigoEl) codigoEl.value = "";
+          codigoEl?.focus();
+        } else {
+          if (correoEl) correoEl.value = "";
+          if (passEl) passEl.value = "";
+          correoEl?.focus();
+        }
       },
     );
   } finally {
@@ -97,7 +108,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   }
 });
 
-/*  REGISTRO  */
+/* ===================== REGISTRO ===================== */
 document
   .getElementById("registerForm")
   ?.addEventListener("submit", async (e) => {
@@ -143,26 +154,48 @@ document
       localStorage.setItem("user", JSON.stringify(data.user));
 
       setTimeout(() => {
-        if (data.user?.rol === "SOPORTE") {
+        if (
+          String(data.user?.rol || "")
+            .trim()
+            .toUpperCase() === "SOPORTE"
+        ) {
           window.location.href = "../IT/dashboard.html";
         } else {
           window.location.href = "../tickets/entrada.html";
         }
       }, 200);
     } catch (err) {
-  let titulo = "Error de conexión";
-  let mensaje = "No se pudo conectar con el servidor";
+      const msg = err?.error || "No se pudo completar el registro";
+      const lower = msg.toLowerCase();
 
-  if (err?.error?.includes("registrado")) {
-    titulo = "Correo ya registrado";
-    mensaje = err.error;
-  }
+      const esCodigo = lower.includes("código");
+      const esCorreo = lower.includes("correo") || lower.includes("registrado");
 
-  await mostrarError(titulo, mensaje, () => {
-    if (correoEl) correoEl.value = "";
-    correoEl?.focus();
-  });
+      await mostrarError(
+        esCodigo
+          ? "Código inválido"
+          : esCorreo
+            ? "Correo ya registrado"
+            : "Error de registro",
+        msg,
+        () => {
+          if (passEl) passEl.value = "";
 
+          if (esCodigo) {
+            if (codigoEl) codigoEl.value = "";
+            codigoEl?.focus();
+            return;
+          }
+
+          if (esCorreo) {
+            if (correoEl) correoEl.value = "";
+            correoEl?.focus();
+            return;
+          }
+
+          nombreEl?.focus();
+        },
+      );
     } finally {
       isSubmitting = false;
       if (btnSubmit) {

@@ -1,6 +1,6 @@
 :root {
   --bg-gradient: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
-  --card: rgba(255, 255, 255, 0.95); 
+  --card: rgba(255, 255, 255, 0.95);
   --text: #0f172a;
   --muted: #64748b;
   --line: #e2e8f0;
@@ -31,10 +31,12 @@ body::before {
   height: 100%;
   z-index: -1;
   opacity: 0.4; /* Ajusta la intensidad de las líneas aquí */
-  background-image: 
-    radial-gradient(circle at 2px 2px, rgba(56, 189, 248, 0.4) 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(56, 189, 248, 0.4) 1px,
+    transparent 0
+  );
   background-size: 40px 40px; /* Tamaño de la cuadrícula de puntos */
-  
 }
 
 body::after {
@@ -45,9 +47,17 @@ body::after {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: 
-    radial-gradient(circle at 10% 10%, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(14, 165, 233, 0.1) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(14, 165, 233, 0.1) 0%,
+      transparent 40%
+    );
   pointer-events: none;
 }
 
@@ -68,27 +78,32 @@ body::after {
 .navbar-content {
   max-width: 1480px;
   margin: 0 auto;
-  background-color: #0b0b0b;
+ background: rgba(8, 18, 32, 0.72);
+ border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px 30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
  
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   position: relative;
+
 }
 
 .navbar-title {
   position: absolute;
   left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  gap: 8px; 
+  align-items: center;
   font-size: 20px;
   font-weight: 800;
   color: #fff;
-  display: flex;
 }
 
-.navbar-title .icon {
-  font-size: 22px;
-}
 
 /* Botón cerrar sesión */
 .logout-btn {
@@ -102,8 +117,13 @@ body::after {
   align-items: center;
   justify-content: center;
   padding: 0 !important; /* evita que se “deforme” */
-  margin-left: auto;
-  margin-right: 10px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 !important;  
+  cursor: pointer;
+  
 }
 
 .logout-btn i {
@@ -112,17 +132,18 @@ body::after {
 
 .logout-btn:hover {
   background-color: #dc2626;
-  transform: translateY(-2px);
+  transform: translateY(calc(-50% - 2px));
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .navbar-logo {
-  position: absolute;
-  left: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 40px;
-  z-index: 10;
+height: 44px;      
+width: auto;
+max-width: 160px;    
+left: 24px;
+top: 50%;
+transform: translateY(-15%);
+object-fit: contain;
 }
 
 .tickets-container {
@@ -132,13 +153,12 @@ body::after {
   width: calc(100% - 36px);
   text-align: left;
 
-  background: transparent; 
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   padding: 20px;
   color: #fff;
 
- 
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
@@ -752,7 +772,6 @@ footer {
 .pill.terminado {
   background: var(--closed);
 }
-
 
 @media (max-width: 520px) {
   .modal__row {

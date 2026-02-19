@@ -456,7 +456,7 @@ function activarBotonVer() {
 
       // fecha/hora
       document.getElementById("d-fecha").textContent = formatearFechaHora(
-        ticket.FecCreacion,
+        ticket.FechaCreacion,
       );
 
       openModal();
@@ -471,7 +471,7 @@ function ActivarBusqueda() {
   input.addEventListener("keyup", aplicarFiltros);
 }
 
-//HISTORIAL EN DASHBOARD 
+//HISTORIAL EN DASHBOARD
 (function wireHistorialPanel() {
   const btn = document.getElementById("btn-historial");
   const panel = document.getElementById("historialPanel");

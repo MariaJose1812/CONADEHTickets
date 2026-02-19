@@ -12,14 +12,9 @@ body {
   overflow-x: hidden;
   position: relative;
   flex-direction: column;
-  background: linear-gradient(
-    155deg,
-    #ffffff 50%,
-    #154c79 50%
-  );
+  background: linear-gradient(155deg, #ffffff 50%, #154c79 50%);
   background-attachment: fixed;
 }
-
 
 .titulo {
   position: relative;
@@ -60,7 +55,6 @@ textarea {
   border-radius: 4px;
   box-sizing: border-box;
   font-family: Arial;
-  
 }
 
 .card h2 {
@@ -167,7 +161,7 @@ footer {
   text-align: center;
   margin-top: 15px;
   font-size: 13px;
-  color: #555;
+  color: white;
   z-index: 10;
 }
 
@@ -248,7 +242,7 @@ footer {
   color: #134e4a;
 }
 
-#ticketDescripcion{
+#ticketDescripcion {
   display: block;
   max-height: 150px;
   overflow-y: auto;
@@ -264,4 +258,3 @@ footer {
   background-color: #0f766e;
   border-radius: 3px;
 }
-
