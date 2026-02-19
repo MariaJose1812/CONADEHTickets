@@ -471,7 +471,7 @@ function ActivarBusqueda() {
   input.addEventListener("keyup", aplicarFiltros);
 }
 
-// ===== HISTORIAL EN DASHBOARD (NUEVO) =====
+//HISTORIAL EN DASHBOARD 
 (function wireHistorialPanel() {
   const btn = document.getElementById("btn-historial");
   const panel = document.getElementById("historialPanel");
@@ -521,7 +521,7 @@ async function cargarHistorial(container) {
   try {
     const token = localStorage.getItem("token");
 
-    // ✅ Endpoint del historial
+    // Endpoint del historial
     const res = await fetch(
       "http://localhost:3000/api/admin/tickets/historial",
       {
@@ -570,7 +570,7 @@ function renderHistorial(container, items) {
         <div class="${historialPillClase(h.Estado)}">${h.Estado || "—"}</div>
       </div>
       <div class="historial-meta">
-        <div><strong>Atendido por:</strong> ${h.IdUsuario || "—"}</div>
+        <div><strong>Atendido por:</strong> ${h.NombreUsuario || h.IdUsuario || "—"}</div>
         <div><strong>Fecha:</strong> ${formatearFechaHora(h.FecCreacion)}</div>
 
       </div>

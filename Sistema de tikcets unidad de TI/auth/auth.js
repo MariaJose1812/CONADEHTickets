@@ -5,7 +5,7 @@ let isSubmitting = false;
 function mostrarError(titulo, mensaje, onAceptar) {
   const msg = mensaje || "Error desconocido";
 
-  // Si SweetAlert2 está cargado, úsalo
+ 
   if (typeof Swal !== "undefined" && Swal.fire) {
     return Swal.fire({
       icon: "error",
@@ -150,15 +150,19 @@ document
         }
       }, 200);
     } catch (err) {
-      await mostrarError(
-        "Correo ya registrado",
-        err?.error || "No se pudo completar el registro",
-        () => {
-          // para que lo borre el correo;
-          if (correoEl) correoEl.value = "";
-          correoEl?.focus();
-        },
-      );
+  let titulo = "Error de conexión";
+  let mensaje = "No se pudo conectar con el servidor";
+
+  if (err?.error?.includes("registrado")) {
+    titulo = "Correo ya registrado";
+    mensaje = err.error;
+  }
+
+  await mostrarError(titulo, mensaje, () => {
+    if (correoEl) correoEl.value = "";
+    correoEl?.focus();
+  });
+
     } finally {
       isSubmitting = false;
       if (btnSubmit) {
