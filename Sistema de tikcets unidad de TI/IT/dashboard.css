@@ -78,18 +78,17 @@ body::after {
 .navbar-content {
   max-width: 1480px;
   margin: 0 auto;
- background: rgba(8, 18, 32, 0.72);
- border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 18, 32, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px 30px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
- 
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   position: relative;
-
 }
 
 .navbar-title {
@@ -97,13 +96,12 @@ body::after {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  gap: 8px; 
+  gap: 8px;
   align-items: center;
   font-size: 20px;
   font-weight: 800;
   color: #fff;
 }
-
 
 /* Botón cerrar sesión */
 .logout-btn {
@@ -121,9 +119,8 @@ body::after {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  margin: 0 !important;  
+  margin: 0 !important;
   cursor: pointer;
-  
 }
 
 .logout-btn i {
@@ -137,13 +134,13 @@ body::after {
 }
 
 .navbar-logo {
-height: 44px;      
-width: auto;
-max-width: 160px;    
-left: 24px;
-top: 50%;
-transform: translateY(-15%);
-object-fit: contain;
+  height: 44px;
+  width: auto;
+  max-width: 160px;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-15%);
+  object-fit: contain;
 }
 
 .tickets-container {
@@ -189,9 +186,11 @@ object-fit: contain;
   border: 1px solid var(--line);
   outline: none;
   font-size: 14px;
-  background: transparent;
   box-sizing: border-box;
   max-width: 100%;
+  color: white;
+  outline: none;
+
 }
 
 #search-ticket:focus {

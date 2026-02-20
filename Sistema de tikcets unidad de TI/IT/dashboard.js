@@ -38,6 +38,47 @@ function estadoClase(estado) {
   return "estado-pendiente";
 }
 
+/* Bloqueo de transicion de estados 
+   Abierto = En Proceso / Terminado
+   En Proceso = Terminado
+   Terminado = nada */
+const TRANSICIONES_VALIDAS = {
+  Abierto: ["En Proceso", "Terminado"],
+  "En Proceso": ["Terminado"],
+  Terminado: [],
+};
+
+function puedeCambiarEstado(estadoActual, nuevoEstado) {
+  const actual = normalizarEstado(estadoActual);
+  const nuevo = normalizarEstado(nuevoEstado);
+  return (TRANSICIONES_VALIDAS[actual] || []).includes(nuevo);
+}
+
+function configurarOpcionesEstado(selectEl, estadoActual) {
+  const actual = normalizarEstado(estadoActual);
+
+  //Si está Terminado, bloquea el select
+  if (actual === "Terminado") {
+    selectEl.disabled = true;
+    return;
+  }
+
+  // Si no está Terminado asegura que esté habilitado
+  selectEl.disabled = false;
+
+  selectEl.querySelectorAll("option").forEach((opt) => {
+    const val = normalizarEstado(opt.value);
+
+    // El estado actual se mantiene pero no se puede seleccionar
+    if (val === actual) {
+      opt.disabled = true;
+      return;
+    }
+
+    // Bloquea los estados no permitidos
+    opt.disabled = !puedeCambiarEstado(actual, val);
+  });
+}
 /* Fecha y Hora */
 
 function formatearFechaHora(fechaISO) {
@@ -235,6 +276,12 @@ function renderTablaPaginada() {
     tbody.appendChild(tr);
   });
 
+  // Deshabilitar opciones inválidas en cada select
+  document.querySelectorAll(".estado-select").forEach((s) => {
+    const actual = s.dataset.prev || s.value;
+    configurarOpcionesEstado(s, actual);
+  });
+
   activarCambioEstado();
   activarBotonVer();
 }
@@ -345,6 +392,12 @@ function activarCambioEstado() {
       const prevEstado = this.dataset.prev || this.value;
       const nuevoEstado = this.value;
 
+      // Bloquea transiciones inválidas
+      if (!puedeCambiarEstado(prevEstado, nuevoEstado)) {
+        this.value = prevEstado;
+        this.className = `estado-select ${estadoClase(prevEstado)}`;
+        return;
+      }
       this.className = `estado-select ${estadoClase(nuevoEstado)}`;
 
       try {
@@ -374,6 +427,9 @@ function activarCambioEstado() {
         // si todo ok, guarda el estado previo
         this.dataset.prev = nuevoEstado;
 
+        // actualizar opciones permitidas según nuevo estado
+        configurarOpcionesEstado(this, nuevoEstado);
+
         // actualizar en memoria
         ALL_TICKETS = ALL_TICKETS.map((t) =>
           t.IdTicket === Number(idTicket) ? { ...t, Estado: nuevoEstado } : t,
@@ -390,6 +446,9 @@ function activarCambioEstado() {
         this.className = `estado-select ${estadoClase(prevEstado)}`;
         alert("Error al actualizar el estado");
         console.error(error);
+
+        // Reaplicar restricciones del estado previo
+        configurarOpcionesEstado(this, prevEstado);
       }
     });
   });
@@ -471,7 +530,7 @@ function ActivarBusqueda() {
   input.addEventListener("keyup", aplicarFiltros);
 }
 
-//HISTORIAL EN DASHBOARD
+//Historial dashboard
 (function wireHistorialPanel() {
   const btn = document.getElementById("btn-historial");
   const panel = document.getElementById("historialPanel");

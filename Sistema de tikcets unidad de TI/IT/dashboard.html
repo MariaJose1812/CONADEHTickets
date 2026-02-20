@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="dashboard.css" />
+    <link rel="stylesheet" href="../responsive.css" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -12,22 +14,19 @@
     <title>Bienvenido al Sistema de Tickets</title>
   </head>
   <body>
+    <nav class="top-navbar">
+      <div class="navbar-content">
+        <img src="../Background_Images/infotec.jpg" class="navbar-logo" />
 
- <nav class="top-navbar">
-  <div class="navbar-content">
+        <div class="navbar-title">
+          <span>Sistema de Tickets - Unidad IT</span>
+        </div>
 
-    <img src="../Background_Images/infotec.jpg" class="navbar-logo" />
-
-    <div class="navbar-title">
-      <span>Sistema de Tickets - Unidad IT</span>
-    </div>
-
-    <button class="logout-btn" type="button" onclick="cerrarSesion()">
-      <i class="fa-solid fa-right-from-bracket"></i>
-    </button>
-
-  </div>
-</nav>
+        <button class="logout-btn" type="button" onclick="cerrarSesion()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </nav>
     <div class="tickets-container">
       <h2><i class="fa-solid fa-ticket"></i> Tickets Registrados</h2>
 
