@@ -102,9 +102,6 @@ textarea {
   resize: none;
 }
 
-.input-group input[type="email"] {
-  width: 89%;
-}
 
 button {
   position: relative;
